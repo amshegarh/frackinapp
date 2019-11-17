@@ -1,0 +1,17 @@
+query {
+  repository(name: "$rep_name", owner: "$rep_user") {
+    folder: object(expression: "$folder") {
+      ... on Tree {
+        entries {
+          name,
+          type,
+          object {
+            ... on Blob {
+              text
+            }
+          }
+        }
+      }
+    }
+  }
+}

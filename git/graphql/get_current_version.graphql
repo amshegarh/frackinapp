@@ -1,0 +1,15 @@
+query {
+  repository(name: "FrackinUniverse", owner: "sayterdarkwynd") {
+    releases(last: 1){
+      nodes{
+        url
+        tag{
+          name
+          target{
+            oid
+          }
+        }
+      }
+    }
+  }
+}
