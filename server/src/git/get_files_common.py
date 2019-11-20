@@ -67,5 +67,5 @@ class GitFetcher:
                         items[item_data[self.entity_name_key] if self.entity_name_key else item["name"]] = item_data
         return {
             self.root_folder: items,
-            images: images,
+            'images': images,
         }

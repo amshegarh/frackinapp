@@ -103,7 +103,7 @@ class TenantsFetcher(GitFetcher):
 
 
 async def get_all_fetchers():
-    return gather(
+    return await gather(
         BiomesFetcher().fetch_data(),
         CodexFetcher().fetch_data(),
         CollectionsFetcher().fetch_data(),
