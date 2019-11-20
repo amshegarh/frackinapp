@@ -1,4 +1,6 @@
-from git.get_files_common import GitFetcher
+from asyncio import gather
+
+from src.git.get_files_common import GitFetcher
 
 
 class ItemsFetcher(GitFetcher):
@@ -98,3 +100,19 @@ class TenantsFetcher(GitFetcher):
         '.tenant'
     )
     entity_name_key = "name"
+
+
+async def get_all_fetchers():
+    return gather(
+        BiomesFetcher().fetch_data(),
+        CodexFetcher().fetch_data(),
+        CollectionsFetcher().fetch_data(),
+        MissionsFetcher().fetch_data(),
+        ObjectsFetcher().fetch_data(),
+        PlantsFetcher().fetch_data(),
+        QuestsFetcher().fetch_data(),
+        RecipesFetcher().fetch_data(),
+        StatsFetcher().fetch_data(),
+        TenantsFetcher().fetch_data(),
+        TechFetcher().fetch_data(),
+    )

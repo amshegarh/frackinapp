@@ -1,5 +1,5 @@
 query {
-  repository(name: "FrackinUniverse", owner: "sayterdarkwynd") {
+  repository(name: "$rep_name", owner: "$rep_user") {
     releases(last: 1){
       nodes{
         url
