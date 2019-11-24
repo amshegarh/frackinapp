@@ -115,4 +115,5 @@ async def get_all_fetchers(commit_id):
         StatsFetcher(commit_id=commit_id).fetch_data(),
         TenantsFetcher(commit_id=commit_id).fetch_data(),
         TechFetcher(commit_id=commit_id).fetch_data(),
+        ItemsFetcher(commit_id=commit_id).fetch_data(),
     )

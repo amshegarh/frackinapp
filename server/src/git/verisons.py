@@ -83,17 +83,17 @@ class Controller:
             self.logger.info("Finished fetching new data from git")
             data = {}
             for item in data_raw:
-                data.update(**item)
+                data.update(item)
 
             self.logger.info("Started processing data")
             for obj in data['objects']['data']:
                 categories = []
                 try:
                     categories = obj['interactData']['filter']
-                except KeyError:
+                except:
                     try:
                         categories = obj['upgradeStages'][-1]['interactData']['filter']
-                    except KeyError:
+                    except:
                         pass
                 if len(categories) != 0:
                     categories = set(categories)
@@ -117,6 +117,17 @@ class Controller:
                             obj['recipes'].append(recipe)
                         else:
                             obj['recipes'] = [recipe]
+
+            for item in data['items']['data']:
+                for recipe in data['recipes']['data']:
+                    items = [item['item'] for item in recipe['input']] +\
+                            [item['item'] for item in recipe['output']]
+                    if item in items:
+                        # found a recipe for object
+                        if 'recipes' in item:
+                            item['recipes'].append(recipe)
+                        else:
+                            item['recipes'] = [recipe]
             del data["recipes"]  # dont need recipes anymore, all are stored inside objects
 
             self.current_version_info = self.latest_version_info
