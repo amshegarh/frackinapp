@@ -4,9 +4,8 @@ import logging
 import asyncio
 import src.git.verisons
 
-data = {}
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
 
 async def data_routine():
     version_controller = src.git.verisons.Controller()

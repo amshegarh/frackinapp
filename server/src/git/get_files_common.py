@@ -28,7 +28,8 @@ class GitFetcher:
 
     def querry_formatter(self, folder: list = "") -> dict:
         folder = f"{self.commit_id}:" + self.folders_to_string(folder)
-        query = self.query_get_folder_contents.substitute(folder=folder, rep_user=config.REPOSITORY_USER,                                    rep_name=config.REPOSITORY_NAME)
+        query = self.query_get_folder_contents.substitute(folder=folder, rep_user=config.REPOSITORY_USER,
+                                                          rep_name=config.REPOSITORY_NAME)
         return {'query': query}
 
     async def fetch_data(self):
@@ -47,10 +48,16 @@ class GitFetcher:
                     response = await http_client_session.post(config.GIT_API_ENDPOINT,
                                                               json=self.querry_formatter(folder=folder),
                                                               headers=config.GIT_HEADERS)
-                    data = await response.json()
+                    try:
+                        data = await response.json()
+                    except Exception as E:
+                        self.logger.error(f"""error in {folder}
+                        error: {E}""")
+                        continue
                     self.logger.debug(f"got data from {folder}")
                     if "data" not in data:
-                        self.logger.warning(f"Failed to fetch {folder}, waiting, reason == {data}")
+                        self.logger.warning(f"""Failed to fetch {folder},
+                         reason: {data}""")
                         await asyncio.sleep(config.RETRY_GIT_REQUEST_TIME)
                         continue
                     else:
@@ -61,11 +68,14 @@ class GitFetcher:
                         deque_folders.appendleft(folder + [item["name"]])
                     elif item["name"].endswith(".png"):
                         self.logger.debug(f"got image {item['name']}")
-                        images[item["name"]] = f"https://raw.githubusercontent.com/{config.REPOSITORY_USER}/{config.REPOSITORY_NAME}/{self.commit_id}/{'/'.join(folder)}/{item['name']}"
+                        images[item[
+                            "name"]] = f"https://raw.githubusercontent.com/{config.REPOSITORY_USER}/{config.REPOSITORY_NAME}/{self.commit_id}/{'/'.join(folder)}/{item['name']}"
                     elif item["name"].endswith(self.allowed_files):
                         item_data = hjson_loads(item["object"]["text"], strict=False)
                         items[item_data[self.entity_name_key] if self.entity_name_key else item["name"]] = item_data
         return {
-            self.root_folder: items,
-            'images': images,
+            self.root_folder: {
+                "data": items,
+                'images': images
+            }
         }

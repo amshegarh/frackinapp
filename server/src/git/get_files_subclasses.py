@@ -102,17 +102,17 @@ class TenantsFetcher(GitFetcher):
     entity_name_key = "name"
 
 
-async def get_all_fetchers():
+async def get_all_fetchers(commit_id):
     return await gather(
-        BiomesFetcher().fetch_data(),
-        CodexFetcher().fetch_data(),
-        CollectionsFetcher().fetch_data(),
-        MissionsFetcher().fetch_data(),
-        ObjectsFetcher().fetch_data(),
-        PlantsFetcher().fetch_data(),
-        QuestsFetcher().fetch_data(),
-        RecipesFetcher().fetch_data(),
-        StatsFetcher().fetch_data(),
-        TenantsFetcher().fetch_data(),
-        TechFetcher().fetch_data(),
+        BiomesFetcher(commit_id=commit_id).fetch_data(),
+        CodexFetcher(commit_id=commit_id).fetch_data(),
+        CollectionsFetcher(commit_id=commit_id).fetch_data(),
+        MissionsFetcher(commit_id=commit_id).fetch_data(),
+        ObjectsFetcher(commit_id=commit_id).fetch_data(),
+        PlantsFetcher(commit_id=commit_id).fetch_data(),
+        QuestsFetcher(commit_id=commit_id).fetch_data(),
+        RecipesFetcher(commit_id=commit_id).fetch_data(),
+        StatsFetcher(commit_id=commit_id).fetch_data(),
+        TenantsFetcher(commit_id=commit_id).fetch_data(),
+        TechFetcher(commit_id=commit_id).fetch_data(),
     )

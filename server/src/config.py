@@ -8,3 +8,4 @@ GIT_HEADERS = {
     "Authorization": f"bearer {GIT_PA_TOKEN}"
 }
 RETRY_GIT_REQUEST_TIME = 15  # seconds
+RETRY_GIT_VERSION_CHECK_TIME = 3600  # seconds
